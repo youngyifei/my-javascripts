@@ -1,6 +1,6 @@
 ///使用方法getDifftime(time)/time可为string(yyyy-mm-dd hh:MM:ss.xxx)也可为object(Date);
 /// <summary>
-/// 时间格式化 
+/// 时间格式化
 /// </summary>
 ///<author>杨一飞</author>
 ///<param type="object">time</param>
