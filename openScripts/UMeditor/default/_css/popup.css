@@ -1,0 +1,20 @@
+.edui-popup{
+    display: none;
+    background: url('/Content/UMeditor/default/images/pop-bg.png') repeat #fff;
+    padding: 2px;
+}
+.edui-popup .edui-popup-body{
+    border: 1px solid #bfbfbf;
+    background-color: #fff;
+}
+.edui-popup .edui-popup-caret{
+    width: 21px;
+    height: 11px;
+}
+.edui-popup .edui-popup-caret.up{
+    background:url('/Content/UMeditor/default/images/caret.png') no-repeat 0 0;
+}
+.edui-popup .edui-popup-caret.down{
+    background:url('/Content/UMeditor/default/images/caret.png') no-repeat 0 0;
+}
+
