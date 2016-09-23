@@ -2,6 +2,7 @@
 /// <summary>
 /// 时间格式化
 /// </summary>
+///<author>杨一飞</author>
 ///<param type="object">time</param>
 ///<param type="string">time:至少给出年月日</param>
 ///<return type="string">格式化后的时间：n秒前、n分钟前、n小时前、昨天、前天、mm-dd hh-MM、yy-mm-dd hh-MM。。。</return>
