@@ -83,21 +83,21 @@
 //    url: "",//返回的参数参考ajaxF，该参数与ajaxF必须有一个必填
 //    ajax:"get",//||"post"
 //    ajaxData: {},//与url参数是一起的
-//    ajaxF: function (deferred) {//不提倡。会自动执行该方法，并需要给_json赋值，再把deferred对象提交（deferred.resolve()）。方会执行下一步
+//    ajaxF: function (deferred,pageCurrent) {//不提倡。会自动执行该方法，并需要给json赋值，再把deferred对象提交（deferred.resolve(json)）。方会执行下一步
 //        $.ajax({
-//            url: "", data: [], success: function () {
-//                _json = { //通过这个获取值
+//            url: "", data: [], success: function (data) {
+//                var json = { //通过这个获取值
 //                    total: 1,//总数
 //                    list: [],//data
 //                    pageCurrent: 1//页码
 //                }
 //                //获取到数据后
-//                deferred.resolve();
-//            }, fail: function () {
+//                deferred.resolve(json);
+//            }, fail: function (data) {
 //                deferred.reject(data.msg);
 //            }
 //        })
-        
+//      return deferred.promise();
 //    }//if(ajaxF）不为空则用这个方法获取渲染界面的Data
 //}
 var PageTemplateHandler = function (options) {
@@ -106,7 +106,7 @@ var PageTemplateHandler = function (options) {
         pageCurrent: 1,
         ajax:"get"
     }
-    var _regex = /\{\{([a-zA-Z]+)\}\}/g;
+    var _regex = /\{\{([0-9a-zA-Z\_]+)\}\}/g;
     var _templateStr = '';
     var _renderConfig = {};
     var _page = null;
@@ -120,6 +120,7 @@ var PageTemplateHandler = function (options) {
     }
     var renderConfigInit = function () {
         var renderT = defaluts.templateDataRender;
+        var match = [];
         while (match = _regex.exec(_templateStr)) {
             var name = match[1];
             _renderConfig[name] = renderDefaluts;
@@ -161,11 +162,10 @@ var PageTemplateHandler = function (options) {
             })
         } else {
             var deferred = $.Deferred();
-            var _json = [];
-            ajaxF(deferred).done(function () {
-                var str = getStr(_json.list);
+            defaluts.ajaxF(deferred,pageCurrent).done(function (data) {
+                var str = getStr(data.list);
                 defaluts.div$.html('').append(str);
-                var pageCount = Math.ceil(_json.total / defaluts.pageSize);
+                var pageCount = Math.ceil(data.total / defaluts.pageSize);
                 _page.init(defaluts.page$, pageCurrent, pageCount, init);
             }).fail(function () {
             });
@@ -173,7 +173,6 @@ var PageTemplateHandler = function (options) {
     }
     return {
         init: function (options) {
-            debugger;
             defaluts = $.extend({}, defaluts, options);
             _page = new pageHandler();
             if (defaluts.template && defaluts.template != '') {
@@ -183,6 +182,7 @@ var PageTemplateHandler = function (options) {
             } else {
                 return;
             }
-        }
+        },
+        reload:init
     }
 };
